@@ -279,12 +279,15 @@ function App() {
           <Title3D color={titleColor}>
             {appTitle}
           </Title3D>
+          <Typography variant="h6" sx={{ color: 'white', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>
+            {renderVibeMessage()}
+          </Typography>
         </Box>
 
-        <Paper
-          elevation={3}
-          sx={{
-            p: 4,
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            p: 4, 
             backgroundColor: 'rgba(255, 255, 255, 0.9)',
             backdropFilter: 'blur(10px)',
             borderRadius: 2
@@ -298,7 +301,7 @@ function App() {
                   multiline
                   rows={4}
                   variant="outlined"
-                  label="Write your sentence here"
+                  label="Enter your sentence"
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                   disabled={loading}
@@ -325,35 +328,27 @@ function App() {
                     },
                     height: '48px',
                     fontSize: '1.1rem',
-                    mt: 2 // Add top margin to separate from TextField, consistent with spacing
                   }}
                 >
                   {loading ? 'Analyzing...' : 'Check Vibe'}
                 </Button>
               </Grid>
             </Grid>
-
-            {/* Conditionally render the initial descriptive message or the analysis result */}
-            {!analysis && (
-              <Typography variant="h6" sx={{ mt: 2, textAlign: 'center', color: '#555' }}>
-                {renderVibeMessage()}
-              </Typography>
-            )}
-
-            {analysis && (
-              <Box sx={{ mt: 2, p: 2, backgroundColor: 'white', borderRadius: 1, boxShadow: 1 }}>
-                <Typography variant="body1" sx={{ whiteSpace: 'pre-line', textAlign: 'center' }}>
-                  {analysis.message}
-                </Typography>
-              </Box>
-            )}
-
-            {error && (
-              <Alert severity="error" sx={{ mt: 2 }}>
-                {error}
-              </Alert>
-            )}
           </form>
+
+          {error && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {error}
+            </Alert>
+          )}
+
+          {analysis && (
+            <Box sx={{ mt: 3, p: 2, backgroundColor: 'rgba(0,0,0,0.05)', borderRadius: 1 }}>
+              <Typography variant="body1" sx={{ whiteSpace: 'pre-line' }}>
+                {analysis.message}
+              </Typography>
+            </Box>
+          )}
         </Paper>
       </Container>
     </AppContainer>
@@ -361,4 +356,3 @@ function App() {
 }
 
 export default App; 
- 

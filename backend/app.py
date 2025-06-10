@@ -1,7 +1,7 @@
 # Import necessary Flask modules for building the web application.
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 # Import CORS to handle cross-origin requests, allowing the frontend to communicate with the backend.
-# from flask_cors import CORS
+from flask_cors import CORS
 # Import load_dotenv to load environment variables from a .env file.
 from dotenv import load_dotenv
 # Import os to interact with the operating system, e.g., for environment variables.
@@ -13,9 +13,9 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 load_dotenv()
 
 # Initialize the Flask application.
-app = Flask(__name__, static_folder=os.path.abspath('../frontend/build'), template_folder=os.path.abspath('../frontend/build'))
+app = Flask(__name__)
 # Enable CORS for all routes, which is crucial for frontend-backend communication.
-# CORS(app)
+CORS(app)
 
 # Initialize VADER sentiment analyzer. This object will be used to calculate sentiment scores.
 analyzer = SentimentIntensityAnalyzer()
@@ -85,18 +85,6 @@ def analyze_note():
         print(f"General Error: {str(e)}")
         # Return an error message to the frontend.
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
-
-# Serve React App
-@app.route('/')
-def serve():
-    return send_from_directory(app.static_folder, 'index.html')
-
-@app.route('/<path:path>')
-def serve_static(path):
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, 'index.html')
 
 # This block ensures the Flask app runs only when the script is executed directly.
 if __name__ == '__main__':
